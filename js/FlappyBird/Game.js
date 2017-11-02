@@ -2,10 +2,7 @@ import { Bird } from './Bird';
 import { Pipe } from './Pipe';
 import { Neuroevolution } from '../Neural/Neuroevolution';
 
-const Neuvol = new Neuroevolution({
-  population: 50,
-  network: [2, [2], 1],
-});
+const Neuvol = new Neuroevolution();
 
 class Game {
   constructor(images) {

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,51 +73,60 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Network = undefined;
+/**
+* Logistic activation function.
+*
+* @param {x} Input value.
+* @return Logistic function output.
+*/
+var activation = function activation(x) {
+  return 1 / (1 + Math.exp(-x));
+};
 
-var _Layer = __webpack_require__(8);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/**
+  * Returns a random value between -1 and 1.
+  *
+  * @return Random value.
+  */
+var randomClamped = function randomClamped() {
+  return Math.random() * 2 - 1;
+};
 
 var defaultOptions = {
-  /**
-      * Logistic activation function.
-      *
-  * @param {a} Input value.
-  * @return Logistic function output.
-  */
-  activation: function activation(a) {
-    var ap = -a / 1;
-    return 1 / (1 + Math.exp(ap));
-  },
+  activation: activation,
+  randomClamped: randomClamped,
 
-
-  /**
-   * Returns a random value between -1 and 1.
-   *
-   * @return Random value.
-   */
-  randomClamped: function randomClamped() {
-    return Math.random() * 2 - 1;
-  },
-
-
-  // various factors and parameters (along with default values).
-  network: [2, [2], 1], // Perceptron network structure (1 hidden
-  // layer).
+  network: [2, [2], 1], // Perceptron network structure (1 hidden layer).
   population: 50, // Population by generation.
-  elitism: 0.2, // Best networks kepts unchanged for the next
-  // generation (rate).
-  randomBehaviour: 0.2, // New random networks for the next generation
-  // (rate).
+  elitism: 0.2, // Best networks kepts unchanged for the next generation (rate).
+  randomBehaviour: 0.2, // New random networks for the next generation (rate).
   mutationRate: 0.1, // Mutation rate on the weights of synapses.
-  mutationRange: 0.5, // Interval of the mutation changes on the
-  // synapse weight.
+  mutationRange: 0.5, // Interval of the mutation changes on the synapse weight.
   historic: 0, // Latest generations saved.
   lowHistoric: false, // Only save score (not the network).
   scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
   nbChild: 1 // Number of children by breeding.
 };
+
+exports.defaultOptions = defaultOptions;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Network = undefined;
+
+var _Layer = __webpack_require__(9);
+
+var _defaultOptions = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Network =
 /**
@@ -233,7 +242,7 @@ function Network() {
   };
 
   this.layers = [];
-  this.options = defaultOptions;
+  this.options = _defaultOptions.defaultOptions;
 }
 
 /**
@@ -274,13 +283,13 @@ function Network() {
 exports.Network = Network;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _Game = __webpack_require__(2);
+var _Game = __webpack_require__(3);
 
 var loadImages = function loadImages(sources, callback) {
   var nb = 0;
@@ -348,7 +357,7 @@ window.speed = function (fps) {
 };
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -359,18 +368,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Game = undefined;
 
-var _Bird = __webpack_require__(3);
+var _Bird = __webpack_require__(4);
 
-var _Pipe = __webpack_require__(4);
+var _Pipe = __webpack_require__(5);
 
-var _Neuroevolution = __webpack_require__(5);
+var _Neuroevolution = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Neuvol = new _Neuroevolution.Neuroevolution({
-  population: 50,
-  network: [2, [2], 1]
-});
+var Neuvol = new _Neuroevolution.Neuroevolution();
 
 var Game = function Game(images) {
   var _this = this;
@@ -532,7 +538,7 @@ var Game = function Game(images) {
 exports.Game = Game;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -595,7 +601,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.Bird = Bird;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -649,7 +655,7 @@ var Pipe = function () {
 exports.Pipe = Pipe;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -662,53 +668,15 @@ exports.Neuroevolution = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _Generations = __webpack_require__(6);
+var _Generations = __webpack_require__(7);
 
-var _Network = __webpack_require__(0);
+var _Network = __webpack_require__(1);
 
-var _Genome = __webpack_require__(10);
+var _Genome = __webpack_require__(11);
+
+var _defaultOptions = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultOptions = {
-  /**
-      * Logistic activation function.
-      *
-  * @param {a} Input value.
-  * @return Logistic function output.
-  */
-  activation: function activation(a) {
-    var ap = -a / 1;
-    return 1 / (1 + Math.exp(ap));
-  },
-
-
-  /**
-   * Returns a random value between -1 and 1.
-   *
-   * @return Random value.
-   */
-  randomClamped: function randomClamped() {
-    return Math.random() * 2 - 1;
-  },
-
-
-  // various factors and parameters (along with default values).
-  network: [2, [2], 1], // Perceptron network structure (1 hidden
-  // layer).
-  population: 50, // Population by generation.
-  elitism: 0.2, // Best networks kepts unchanged for the next
-  // generation (rate).
-  randomBehaviour: 0.2, // New random networks for the next generation
-  // (rate).
-  mutationRate: 0.1, // Mutation rate on the weights of synapses.
-  mutationRange: 0.5, // Interval of the mutation changes on the
-  // synapse weight.
-  historic: 0, // Latest generations saved.
-  lowHistoric: false, // Only save score (not the network).
-  scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
-  nbChild: 1 // Number of children by breeding.
-};
 
 /**
  * Provides a set of classes and methods for handling Neuroevolution and
@@ -716,7 +684,6 @@ var defaultOptions = {
  *
  * @param {options} An object of options for Neuroevolution.
  */
-
 var Neuroevolution = function Neuroevolution(options) {
   var _this = this;
 
@@ -770,7 +737,7 @@ var Neuroevolution = function Neuroevolution(options) {
   };
 
   // Declaration of module parameters (options) and default values
-  this.options = _extends({}, defaultOptions, { options: options });
+  this.options = _extends({}, _defaultOptions.defaultOptions, { options: options });
   this.generations = new _Generations.Generations();
 }
 
@@ -800,7 +767,7 @@ var Neuroevolution = function Neuroevolution(options) {
 exports.Neuroevolution = Neuroevolution;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -811,51 +778,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Generations = undefined;
 
-var _Generation = __webpack_require__(7);
+var _Generation = __webpack_require__(8);
 
-var _Network = __webpack_require__(0);
+var _Network = __webpack_require__(1);
+
+var _defaultOptions = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultOptions = {
-  /**
-      * Logistic activation function.
-      *
-  * @param {a} Input value.
-  * @return Logistic function output.
-  */
-  activation: function activation(a) {
-    var ap = -a / 1;
-    return 1 / (1 + Math.exp(ap));
-  },
-
-
-  /**
-   * Returns a random value between -1 and 1.
-   *
-   * @return Random value.
-   */
-  randomClamped: function randomClamped() {
-    return Math.random() * 2 - 1;
-  },
-
-
-  // various factors and parameters (along with default values).
-  network: [2, [2], 1], // Perceptron network structure (1 hidden
-  // layer).
-  population: 50, // Population by generation.
-  elitism: 0.2, // Best networks kepts unchanged for the next
-  // generation (rate).
-  randomBehaviour: 0.2, // New random networks for the next generation
-  // (rate).
-  mutationRate: 0.1, // Mutation rate on the weights of synapses.
-  mutationRange: 0.5, // Interval of the mutation changes on the
-  // synapse weight.
-  historic: 0, // Latest generations saved.
-  lowHistoric: false, // Only save score (not the network).
-  scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
-  nbChild: 1 // Number of children by breeding.
-};
 
 var Generations =
 /**
@@ -903,7 +832,7 @@ function Generations() {
   };
 
   this.generations = [];
-  this.options = defaultOptions;
+  this.options = _defaultOptions.defaultOptions;
   // var currentGeneration = new Generation();
 }
 
@@ -935,7 +864,7 @@ function Generations() {
 exports.Generations = Generations;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -944,48 +873,11 @@ exports.Generations = Generations;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Generation = undefined;
+
+var _defaultOptions = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultOptions = {
-  /**
-      * Logistic activation function.
-      *
-  * @param {a} Input value.
-  * @return Logistic function output.
-  */
-  activation: function activation(a) {
-    var ap = -a / 1;
-    return 1 / (1 + Math.exp(ap));
-  },
-
-
-  /**
-   * Returns a random value between -1 and 1.
-   *
-   * @return Random value.
-   */
-  randomClamped: function randomClamped() {
-    return Math.random() * 2 - 1;
-  },
-
-
-  // various factors and parameters (along with default values).
-  network: [2, [2], 1], // Perceptron network structure (1 hidden
-  // layer).
-  population: 50, // Population by generation.
-  elitism: 0.2, // Best networks kepts unchanged for the next
-  // generation (rate).
-  randomBehaviour: 0.2, // New random networks for the next generation
-  // (rate).
-  mutationRate: 0.1, // Mutation rate on the weights of synapses.
-  mutationRange: 0.5, // Interval of the mutation changes on the
-  // synapse weight.
-  historic: 0, // Latest generations saved.
-  lowHistoric: false, // Only save score (not the network).
-  scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
-  nbChild: 1 // Number of children by breeding.
-};
 
 var Generation =
 /**
@@ -1089,7 +981,7 @@ function Generation() {
   };
 
   this.genomes = [];
-  this.options = defaultOptions;
+  this.options = _defaultOptions.defaultOptions;
 }
 
 /**
@@ -1119,7 +1011,7 @@ function Generation() {
 exports.Generation = Generation;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1130,7 +1022,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Layer = undefined;
 
-var _Neuron = __webpack_require__(9);
+var _Neuron = __webpack_require__(10);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1174,7 +1066,7 @@ function Layer(index) {
 exports.Layer = Layer;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1183,48 +1075,11 @@ exports.Layer = Layer;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Neuron = undefined;
+
+var _defaultOptions = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultOptions = {
-  /**
-      * Logistic activation function.
-      *
-  * @param {a} Input value.
-  * @return Logistic function output.
-  */
-  activation: function activation(a) {
-    var ap = -a / 1;
-    return 1 / (1 + Math.exp(ap));
-  },
-
-
-  /**
-   * Returns a random value between -1 and 1.
-   *
-   * @return Random value.
-   */
-  randomClamped: function randomClamped() {
-    return Math.random() * 2 - 1;
-  },
-
-
-  // various factors and parameters (along with default values).
-  network: [2, [2], 1], // Perceptron network structure (1 hidden
-  // layer).
-  population: 50, // Population by generation.
-  elitism: 0.2, // Best networks kepts unchanged for the next
-  // generation (rate).
-  randomBehaviour: 0.2, // New random networks for the next generation
-  // (rate).
-  mutationRate: 0.1, // Mutation rate on the weights of synapses.
-  mutationRange: 0.5, // Interval of the mutation changes on the
-  // synapse weight.
-  historic: 0, // Latest generations saved.
-  lowHistoric: false, // Only save score (not the network).
-  scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
-  nbChild: 1 // Number of children by breeding.
-};
 
 var Neuron =
 /**
@@ -1246,7 +1101,7 @@ function Neuron() {
 
   this.value = 0;
   this.weights = [];
-  this.options = defaultOptions;
+  this.options = _defaultOptions.defaultOptions;
 }
 
 /**
@@ -1260,7 +1115,7 @@ function Neuron() {
 exports.Neuron = Neuron;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
